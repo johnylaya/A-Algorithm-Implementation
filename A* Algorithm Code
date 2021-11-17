@@ -5,24 +5,20 @@ from time import sleep
 
 def center_gui(root):
 
-    # Gets the requested values of the height and width.
+   
     windowWidth = root.winfo_reqwidth()
     windowHeight = root.winfo_reqheight()
 
-    # Gets both half the screen width/height and window width/height
+
     positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
     positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 
-    # Positions the window in the center of the page.
+    
     root.geometry("+{}+{}".format(positionRight, positionDown))
 
 
 def pop_up_window(app):
-    """
-    Displays the start up window with the instructions.
-    When the pop up is displayed the buttons at the backround
-    are disabled
-    """
+    
 
     def start_button_action():
 
@@ -66,13 +62,13 @@ class App:
             self.buttons.append([])
             for j in range(10):
 
-                # Initiliaze buttons
+                
                 button = Button(master, width=2, height=1,
                                 command=partial(self.button_operation, i, j), state="disabled")
 
                 self.buttons[i].append(button)
 
-                # This event is used for the obstacle setting
+               
                 self.buttons[i][j].bind('<Enter>', partial(
                     self.add_obstacle, i, j))
 
@@ -95,18 +91,12 @@ class App:
             for j in range(10):
                 self.buttons[i][j].configure(state="disable")
 
-    # Every time a button is clicked this function is triggered
-    # This function is responsible for controling the flow of the program
+
 
     def button_operation(self, row, column):
-        """
-        According to the value of 'mode' this fuction
-        sets the value of start and end. Also by changing
-        the value of mode it controls when we can set obstacles and
-        when we can start the algorithm
-        """
 
-        # Set start mode
+
+
         if self.mode == 0:
 
             self.start.append(row)
@@ -114,7 +104,7 @@ class App:
             self.mode = 1
             self.buttons[row][column].configure(bg='green')
 
-        # Set end mode
+    
         elif self.mode == 1:
 
             self.goal.append(row)
@@ -133,7 +123,7 @@ class App:
 
     def add_obstacle(self, row, column, event):
 
-        # Checks if we are in the obstacle setting mode
+    
         if self.mode == 3:
             obstacle_node = []
             obstacle_node.append(row)
@@ -212,8 +202,8 @@ class App:
 
     def sort_open_set(self, open_set, f_score):
 
-        # The index of the list is the same as the index in the open set
-        # and the value of the index is the f_score of it
+
+
         index_to_fscore = []
 
         for node in open_set:
@@ -250,7 +240,7 @@ class App:
         f_score = []
         came_from = []
 
-        # Initialiazation of g_score and came_from
+  
         for i in range(10):
             f_score.append([])
             g_score.append([])
@@ -286,7 +276,7 @@ class App:
                 node_row = node[0]
                 node_column = node[1]
 
-                # The weight of every edge is 1
+             
                 tentative_gScore = g_score[current_row][current_column] + 1
 
                 if tentative_gScore < g_score[node_row][node_column]:
@@ -309,7 +299,7 @@ class App:
 
     def find_path(self, event):
 
-        # Checks if we are in the correct mode to start the algorithm
+       
         if self.mode == 2:
             self.a_star_algorithm(self.start, self.goal)
             self.disable_buttons()
@@ -334,9 +324,9 @@ if __name__ == '__main__':
     root = Tk()
     app = App(root)
 
-    # Starts the algorithm when we press enter
+    
     root.bind('<Return>', app.find_path)
-    # Resets when we press 'R'
+
     root.bind('r', app.reset)
 
     root.mainloop()
